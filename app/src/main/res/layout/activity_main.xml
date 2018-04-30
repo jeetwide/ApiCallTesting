@@ -4,42 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/clrLightGray"
     tools:context=".MainActivity">
 
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:id="@+id/tvTitle"/>
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <com.cjj.MaterialRefreshLayout
             android:id="@+id/materialRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/m_8dp"
+                android:layout_height="match_parent"
 
-                />
+                android:paddingTop="@dimen/m_8dp" />
 
             <!--android:background="@color/clr_list_bg"-->
 
         </com.cjj.MaterialRefreshLayout>
 
         <include
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             layout="@layout/tag_nodata_found"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,8 @@
 
     <color name="clr_gray">#999999</color>
 
+    <color name="clr_txt_trBlack50">#59CECFD1</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="clrLightGray">@color/clr_txt_trBlack50</color>
 </resources>

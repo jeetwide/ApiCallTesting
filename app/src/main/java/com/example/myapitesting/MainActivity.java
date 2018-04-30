@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cjj.MaterialRefreshLayout;
+import com.cjj.MaterialRefreshListener;
 import com.example.myapitesting.api.model.MovieModel;
 import com.example.myapitesting.api.response.MovieResponse;
 import com.example.myapitesting.utils.AppApi;
@@ -40,7 +41,8 @@ import static com.example.myapitesting.AppFlags.strMsgSomethingWentWrong;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<MovieModel> arrayListMovieModel = new ArrayList<>();
+    private  ListAdapter listAdapter;
+    private ArrayList<MovieModel> arrayListAllMovieModel = new ArrayList<>();
     MovieResponse movieResponse;
 
     @BindView(R.id.tvTitle)
@@ -50,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     String TAG = "==MainActivity==";
+
+    @BindView(R.id.rlNoData)
+    RelativeLayout rlNoData;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -66,12 +71,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initialization();
-        setAdapterData();
-
 
         if (App.isInternetAvailWithMessage(tvTitle, MainActivity.this)) {
             asyncGetMyMovies();
-
         }
 
     }
@@ -83,11 +85,12 @@ public class MainActivity extends AppCompatActivity {
             if (customProgressDialog != null && !customProgressDialog.isShowing())
                 customProgressDialog.show();
 
-            Call callRetrofit2 = App.getRetrofitApiService().GetMovieList(AppApi.OP_POPULAR, App.APP_API_KEY, ""+intPage);
+            Call callRetrofit2 = App.getRetrofitApiService().GetMovieList(AppApi.OP_POPULAR, App.APP_API_KEY, "" + intPage);
             callRetrofit2.enqueue(new Callback<MovieResponse>() {
                 @Override
                 public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
                     try {
+
                         if (customProgressDialog != null)
                             customProgressDialog.dismiss();
 
@@ -101,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                                 try {
                                     //App.showLog(TAG + "--OP_DASHBOARD-error-", " -/- " + responseBody.string());
                                     App.showLog(TAG + "-OP_POPULAR-/" + responseBody.string());
+                                    rlNoData.setVisibility(View.VISIBLE);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -114,8 +118,9 @@ public class MainActivity extends AppCompatActivity {
                                 if (movieResponse.arrayListMovieModel != null && movieResponse.arrayListMovieModel.size() > 0) {
                                     setAdapterData();
                                 } else {
+                                    materialRefreshLayout.setLoadMore(false);
+                                    rlNoData.setVisibility(View.VISIBLE);
                                     if (movieResponse.total_pages != null) {
-
                                         App.showSnackBar(tvTitle, movieResponse.total_pages);
                                     } else {
                                         App.showSnackBar(tvTitle, strMsgSomethingWentWrong);
@@ -156,17 +161,30 @@ public class MainActivity extends AppCompatActivity {
 
             //arrayListAllDashboardModel = StaticDataList.getStaticDashboardData();
 
-            arrayListMovieModel = new ArrayList<>();
+            if (arrayListAllMovieModel == null || intPage <=1)
+                arrayListAllMovieModel = new ArrayList<>();
 
             if (movieResponse != null && movieResponse.arrayListMovieModel != null && movieResponse.arrayListMovieModel.size() > 0) {
-                arrayListMovieModel = movieResponse.arrayListMovieModel;
-            } else {
+                arrayListAllMovieModel.addAll(movieResponse.arrayListMovieModel);
+            } else
+            {
+                materialRefreshLayout.setLoadMore(false);
 
             }
 
-            ListAdapter listAdapter = new ListAdapter(this, arrayListMovieModel);
-
-            recyclerView.setAdapter(listAdapter);
+            if(arrayListAllMovieModel != null && arrayListAllMovieModel.size() >0) {
+                if (listAdapter == null) {
+                    listAdapter = new ListAdapter(this, arrayListAllMovieModel);
+                    recyclerView.setAdapter(listAdapter);
+                } else {
+                    listAdapter.notifyDataSetChanged();
+                }
+                rlNoData.setVisibility(View.GONE);
+            }
+            else
+            {
+                rlNoData.setVisibility(View.VISIBLE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -201,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                 versionViewHolder.tvOverView.setText(StringUtils.setString(mCasesListModel.overview));
 
 
-                Picasso.with(mContext).load(StringUtils.setString(App.strImgBaseURL+mCasesListModel.poster_path)).fit().centerCrop().into(versionViewHolder.img);
+                Picasso.with(mContext).load(StringUtils.setString(App.strImgBaseURL + mCasesListModel.poster_path)).fit().centerCrop().into(versionViewHolder.img);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -216,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
         class VersionViewHolder extends RecyclerView.ViewHolder {
 
-            TextView tvMovieTitle,tvReleaseDate,tvOverView;
+            TextView tvMovieTitle, tvReleaseDate, tvOverView;
             ImageView img;
 
             RelativeLayout rlMenuItem;
@@ -248,9 +266,44 @@ public class MainActivity extends AppCompatActivity {
         materialRefreshLayout.setWaveShow(true);
         materialRefreshLayout.setWaveColor(0x55ffffff);
 
-        materialRefreshLayout.setLoadMore(false); // enable if pagination
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        materialRefreshLayout.setLoadMore(true);
+        materialRefreshLayout.setMaterialRefreshListener(new MaterialRefreshListener() {
+            @Override
+            public void onRefresh(final MaterialRefreshLayout materialRefreshLayout) {
+                try {
+                    //refreshing...
+                    if (App.isInternetAvailWithMessage(tvTitle, MainActivity.this)) {
+
+                        intPage = 1;
+                        arrayListAllMovieModel = new ArrayList<>();
+                        asyncGetMyMovies();
+                    } else {
+                        App.setStopLoading(materialRefreshLayout);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
+                try {
+                    if (App.isInternetAvailWithMessage(tvTitle, MainActivity.this)) {
+
+                        intPage = intPage + 1;
+                        asyncGetMyMovies();
+                    } else {
+                        App.setStopLoading(materialRefreshLayout);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
