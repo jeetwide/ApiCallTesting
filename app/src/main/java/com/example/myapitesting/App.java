@@ -43,6 +43,13 @@ public class App extends Application {
     //Test
     public static String strBaseHostUrl = "https://api.themoviedb.org/3/";
 
+
+    //Image Base URL
+    public static String strImgBaseURL = "https://image.tmdb.org/t/p/w185_and_h278_bestv2";
+
+
+
+
     // class for the share pref keys and valyes get set
     public static SharePrefrences sharePrefrences;
 

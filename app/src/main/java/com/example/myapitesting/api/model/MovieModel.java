@@ -13,4 +13,14 @@ public class MovieModel {
 
     @SerializedName("release_date")
     public String release_date;
+
+    @SerializedName("original_title")
+    public String original_title;
+
+    @SerializedName("overview")
+    public String overview;
+
+    @SerializedName("poster_path")
+    public String poster_path;
+
 }

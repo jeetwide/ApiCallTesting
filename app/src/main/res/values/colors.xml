@@ -8,5 +8,8 @@
 
     <color name="clrTheme">#FF4081</color>
 
+    <color name="clr_gray">#999999</color>
 
+
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
@@ -21,6 +22,7 @@ import com.example.myapitesting.utils.AppApi;
 import com.example.myapitesting.utils.CustomProgressDialog;
 import com.example.myapitesting.utils.PreferencesKeys;
 import com.example.myapitesting.utils.StringUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -194,8 +196,12 @@ public class MainActivity extends AppCompatActivity {
             try {
                 MovieModel mCasesListModel = mArrayList.get(i);
 
-                versionViewHolder.tvMenuItem.setText(StringUtils.setString(mCasesListModel.release_date));
+                versionViewHolder.tvMovieTitle.setText(StringUtils.setString(mCasesListModel.original_title));
+                versionViewHolder.tvReleaseDate.setText(StringUtils.setString(mCasesListModel.release_date));
+                versionViewHolder.tvOverView.setText(StringUtils.setString(mCasesListModel.overview));
 
+
+                Picasso.with(mContext).load(StringUtils.setString(App.strImgBaseURL+mCasesListModel.poster_path)).fit().centerCrop().into(versionViewHolder.img);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -210,8 +216,8 @@ public class MainActivity extends AppCompatActivity {
 
         class VersionViewHolder extends RecyclerView.ViewHolder {
 
-            TextView tvMenuItem;
-
+            TextView tvMovieTitle,tvReleaseDate,tvOverView;
+            ImageView img;
 
             RelativeLayout rlMenuItem;
 
@@ -221,7 +227,11 @@ public class MainActivity extends AppCompatActivity {
 
                 rlMenuItem = (RelativeLayout) itemView.findViewById(R.id.rlMenuItem);
 
-                tvMenuItem = (TextView) itemView.findViewById(R.id.tvMenuItem);
+                tvMovieTitle = (TextView) itemView.findViewById(R.id.tvMovieTitle);
+                tvReleaseDate = (TextView) itemView.findViewById(R.id.tvReleaseDate);
+                tvOverView = (TextView) itemView.findViewById(R.id.tvOverView);
+
+                img = (ImageView) itemView.findViewById(R.id.img);
 
 
             }
