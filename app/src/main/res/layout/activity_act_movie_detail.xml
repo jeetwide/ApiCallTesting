@@ -55,7 +55,7 @@
         android:layout_marginTop="@dimen/m_20dp"
         android:layout_toRightOf="@+id/img"
         android:textStyle="bold"
-        android:text="Overview"
+        android:text=""
         android:textSize="14dp" />
     <TextView
         android:id="@+id/tvOverView"
@@ -75,11 +75,11 @@
 
 
     <TextView
-        android:id="@+id/tvCrewTag"
+        android:id="@+id/tvOtherDetailsTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/m_10dp"
-        android:text="Other Details"
+        android:text=""
         android:textStyle="bold"
         android:textSize="18dp" />
 
@@ -89,7 +89,7 @@
         android:id="@+id/tvbudget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvCrewTag"
+        android:layout_below="@+id/tvOtherDetailsTag"
         android:layout_marginTop="@dimen/m_10dp"
         android:text=""
 

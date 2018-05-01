@@ -58,6 +58,12 @@ public class ActMovieDetail extends AppCompatActivity {
     @BindView(R.id.tvTagline)
     TextView tvTagline;
 
+    @BindView(R.id.tvOverViewTAG)
+    TextView tvOverViewTAG;
+
+    @BindView(R.id.tvOtherDetailsTag)
+    TextView tvOtherDetailsTag;
+
     @BindView(R.id.img)
     ImageView img;
     CustomProgressDialog customProgressDialog;
@@ -119,6 +125,8 @@ public class ActMovieDetail extends AppCompatActivity {
                 tvStatus.setText(StringUtils.setString("Released Status = "+movieDetailsResponse.status));
                 tvRuntime.setText(StringUtils.setString("Runtime  = "+movieDetailsResponse.runtime+" minutes"));
                 tvTagline.setText(StringUtils.setString("TagLine  = "+movieDetailsResponse.tagline));
+                tvOverViewTAG.setText(StringUtils.setString("Overview"));
+                tvOtherDetailsTag.setText(StringUtils.setString("Other Details"));
 
                 Picasso.with(this).load(StringUtils.setString(App.strImgBaseURL+movieModel.poster_path)).fit().centerCrop().into(img);
             }
