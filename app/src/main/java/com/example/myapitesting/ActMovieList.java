@@ -2,6 +2,7 @@ package com.example.myapitesting;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,8 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,11 +25,9 @@ import com.example.myapitesting.utils.StringUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,7 +36,7 @@ import retrofit2.Response;
 import static com.example.myapitesting.AppFlags.strMsgSomethingWentWrong;
 
 
-public class MainActivity extends AppCompatActivity {
+public class ActMovieList extends AppCompatActivity {
 
     private  ListAdapter listAdapter;
     private ArrayList<MovieModel> arrayListAllMovieModel = new ArrayList<>();
@@ -51,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     int intPage = 1;
 
 
-    String TAG = "==MainActivity==";
+    String TAG = "==ActMovieList==";
 
     @BindView(R.id.rlNoData)
     RelativeLayout rlNoData;
@@ -67,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.act_movielist);
         ButterKnife.bind(this);
 
         initialization();
 
-        if (App.isInternetAvailWithMessage(tvTitle, MainActivity.this)) {
+        if (App.isInternetAvailWithMessage(tvTitle, ActMovieList.this)) {
             asyncGetMyMovies();
         }
 
@@ -221,6 +218,23 @@ public class MainActivity extends AppCompatActivity {
 
                 Picasso.with(mContext).load(StringUtils.setString(App.strImgBaseURL + mCasesListModel.poster_path)).fit().centerCrop().into(versionViewHolder.img);
 
+                versionViewHolder.rlMenuItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try{
+
+                            Intent intent = new Intent(ActMovieList.this, ActMovieDetail.class);
+                            intent.putExtra(AppFlags.tagFrom, "ActMovieList");
+                            intent.putExtra(AppFlags.tagMovieListModel, mArrayList.get(i));
+                            App.myStartActivity(ActMovieList.this, intent);
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -267,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
         materialRefreshLayout.setWaveColor(0x55ffffff);
 
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActMovieList.this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         materialRefreshLayout.setLoadMore(true);
@@ -276,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
             public void onRefresh(final MaterialRefreshLayout materialRefreshLayout) {
                 try {
                     //refreshing...
-                    if (App.isInternetAvailWithMessage(tvTitle, MainActivity.this)) {
+                    if (App.isInternetAvailWithMessage(tvTitle, ActMovieList.this)) {
 
                         intPage = 1;
                         arrayListAllMovieModel = new ArrayList<>();
@@ -293,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefreshLoadMore(MaterialRefreshLayout materialRefreshLayout) {
                 try {
-                    if (App.isInternetAvailWithMessage(tvTitle, MainActivity.this)) {
+                    if (App.isInternetAvailWithMessage(tvTitle, ActMovieList.this)) {
 
                         intPage = intPage + 1;
                         asyncGetMyMovies();

@@ -3,6 +3,7 @@ package com.example.myapitesting.api;
 
 
 import com.example.myapitesting.api.response.CommonResponse;
+import com.example.myapitesting.api.response.MovieDetailsResponse;
 import com.example.myapitesting.api.response.MovieResponse;
 
 import java.util.Map;
@@ -33,6 +34,13 @@ public interface ApiService {
             @Path("op") String op,
             @Query("api_key") String api_key,
             @Query("page") String page
+    );
+
+    @GET("movie/{op}")
+    Call<MovieDetailsResponse> GetMovieDetails(
+            @Path("op") String op,
+            @Query("api_key") String api_key
+           //@Query("language") String language
     );
 
     @GET("web-servicetest.php")

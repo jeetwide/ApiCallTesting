@@ -2,7 +2,9 @@ package com.example.myapitesting.api.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class MovieModel {
+import java.io.Serializable;
+
+public class MovieModel implements Serializable {
 
 
     @SerializedName("title")
@@ -22,5 +24,7 @@ public class MovieModel {
 
     @SerializedName("poster_path")
     public String poster_path;
+
+
 
 }

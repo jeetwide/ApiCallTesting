@@ -6,6 +6,7 @@
     <dimen name="screen_m_d42">42dp</dimen>
     <dimen name="screen_m_d28">28dp</dimen>
     <dimen name="screen_m_d14">14dp</dimen>
+    <dimen name="screen_m_d18">18dp</dimen>
     <dimen name="screen_m_d6">6dp</dimen>
 
     <dimen name="screen_padding_sides">16dp</dimen>

@@ -1,5 +1,7 @@
 package com.example.myapitesting;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -127,6 +129,17 @@ public class App extends Application {
 
         //  appendLogApi("c_api", strMessage);
     }
+
+    @SuppressLint("NewApi")
+    public static void myStartActivity(Activity activity, Intent intent) {
+        try {
+            activity.startActivity(intent);
+            activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public static void showLogApiRespose(String op, Response response) {
         //Log.w("=op==>" + op, "response==>");
