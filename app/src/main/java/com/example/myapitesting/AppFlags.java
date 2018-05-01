@@ -47,6 +47,7 @@ public class AppFlags
     private ArrayList<MovieModel> arrayListMovieModel = new ArrayList<>();
 
     public static String tagMovieListModel = "MovieListModel";
+    public static String tagMovieVideoModel = "MovieVideoModel";
 
 
 

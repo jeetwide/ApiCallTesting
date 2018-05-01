@@ -127,6 +127,22 @@
         android:text=""
         android:textSize="14dp" />
 
+        <TextView
+            android:id="@+id/tvWatchVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTagline"
+            android:layout_marginTop="@dimen/m_10dp"
+            android:text="Watch Trailer"
+            android:textSize="14dp" />
+        <TextView
+            android:id="@+id/tvTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvWatchVideo"
+            android:layout_marginTop="@dimen/m_10dp"
+            android:text="Test"
+            android:textSize="14dp" />
     </RelativeLayout>
 
     </LinearLayout>

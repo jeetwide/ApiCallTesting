@@ -24,6 +24,7 @@ public class AppApi {
     //Testing App
    // public static String OP_Movie = "popular?api_key=7e8f60e325cd06e164799af1e317d7a7&language=en-US&page=1";
     public static String OP_POPULAR = "popular";
+    public static String OP_Videos = "videos";
 
 
 

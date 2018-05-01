@@ -1,10 +1,10 @@
 package com.example.myapitesting.api;
 
 
-
 import com.example.myapitesting.api.response.CommonResponse;
 import com.example.myapitesting.api.response.MovieDetailsResponse;
 import com.example.myapitesting.api.response.MovieResponse;
+import com.example.myapitesting.api.response.MovieVideoResponse;
 
 import java.util.Map;
 
@@ -23,12 +23,6 @@ import retrofit2.http.Query;
 public interface ApiService {
 
 
-
-
-
-
-
-
     @GET("movie/{op}")
     Call<MovieResponse> GetMovieList(
             @Path("op") String op,
@@ -40,7 +34,15 @@ public interface ApiService {
     Call<MovieDetailsResponse> GetMovieDetails(
             @Path("op") String op,
             @Query("api_key") String api_key
-           //@Query("language") String language
+            //@Query("language") String language
+    );
+
+    @GET("movie/{id}/{op}")
+    Call<MovieVideoResponse> GetVideoDetails(
+            @Path("id") String id,
+            @Path("op") String op,
+            @Query("api_key") String api_key
+            //@Query("language") String language
     );
 
     @GET("web-servicetest.php")
@@ -53,24 +55,6 @@ public interface ApiService {
             @Query("user_type") String user_type,
             @Query("accessToken") String accessToken
     );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

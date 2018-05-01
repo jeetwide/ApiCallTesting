@@ -1,18 +1,24 @@
 package com.example.myapitesting;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapitesting.api.model.MovieModel;
+import com.example.myapitesting.api.model.MovieVideoModel;
 import com.example.myapitesting.api.response.MovieDetailsResponse;
 import com.example.myapitesting.api.response.MovieResponse;
+import com.example.myapitesting.api.response.MovieVideoResponse;
 import com.example.myapitesting.utils.AppApi;
 import com.example.myapitesting.utils.CustomProgressDialog;
 import com.example.myapitesting.utils.StringUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +41,9 @@ public class ActMovieDetail extends AppCompatActivity {
 
 
     MovieDetailsResponse movieDetailsResponse;
+    MovieVideoResponse movieVideoResponse;
+
+    private ArrayList<MovieVideoModel> arrayListMovieVideomodel = new ArrayList<>();
 
 
     @BindView(R.id.tvMovieTitle)
@@ -42,6 +51,9 @@ public class ActMovieDetail extends AppCompatActivity {
 
     @BindView(R.id.tvOverView)
     TextView tvOverView;
+
+    @BindView(R.id.tvTest)
+    TextView tvTest;
 
     @BindView(R.id.tvbudget)
     TextView tvbudget;
@@ -61,6 +73,9 @@ public class ActMovieDetail extends AppCompatActivity {
     @BindView(R.id.tvOverViewTAG)
     TextView tvOverViewTAG;
 
+    @BindView(R.id.tvWatchVideo)
+    TextView tvWatchVideo;
+
     @BindView(R.id.tvOtherDetailsTag)
     TextView tvOtherDetailsTag;
 
@@ -76,6 +91,7 @@ public class ActMovieDetail extends AppCompatActivity {
 
         getIntentData();
         setViewData();
+        setClickEvents();
 
         if (App.isInternetAvailWithMessage(tvMovieTitle, ActMovieDetail.this)) {
             asyncGetMovieDetails();
@@ -83,6 +99,16 @@ public class ActMovieDetail extends AppCompatActivity {
 
 
 
+
+    }
+
+    private void setClickEvents() {
+        tvWatchVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                asyncGetMovieVideos();
+            }
+        });
 
     }
 
@@ -133,7 +159,7 @@ public class ActMovieDetail extends AppCompatActivity {
         } catch (Exception e) {
         }
     }
-    //MyMovieList API
+    //MyMovieDetails API
     public void asyncGetMovieDetails() {
         try {
             if (customProgressDialog != null && !customProgressDialog.isShowing())
@@ -200,6 +226,86 @@ public class ActMovieDetail extends AppCompatActivity {
         }
     }
 
+    //MyMovieVideos API
+    public void asyncGetMovieVideos() {
+        try {
+            if (customProgressDialog != null && !customProgressDialog.isShowing())
+                customProgressDialog.show();
 
+            Call callRetrofit2 = App.getRetrofitApiService().GetVideoDetails(movieModel.id,"videos",App.APP_API_KEY);
+            callRetrofit2.enqueue(new Callback<MovieVideoResponse>() {
+                @Override
+                public void onResponse(Call<MovieVideoResponse> call, Response<MovieVideoResponse> response) {
+                    try {
+
+                        if (customProgressDialog != null)
+                            customProgressDialog.dismiss();
+
+                        //App.setStopLoading(materialRefreshLayout);
+
+                        movieVideoResponse = response.body();
+
+                        if (movieVideoResponse == null) {
+                            ResponseBody responseBody = response.errorBody();
+                            if (responseBody != null) {
+                                try {
+                                    //App.showLog(TAG + "--OP_DASHBOARD-error-", " -/- " + responseBody.string());
+                                    App.showLog(TAG + "-OP_MoviVideos-/" + responseBody.string());
+                                    // rlNoData.setVisibility(View.VISIBLE);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        } else {
+                            //200 sucess
+                            App.showLogApiRespose(TAG + movieModel.id, response);
+
+                            if (movieVideoResponse != null) {
+
+                              //  tvWatchVideo.setText(movieVideoResponse.);
+                                Toast.makeText(ActMovieDetail.this, "get message", Toast.LENGTH_SHORT).show();
+                               // tvTest.setText(movieVideoResponse.arrayListMovieVideomodel.get(1).key);
+
+
+                                for(int i=0;i<4;i++){
+
+                                    Intent intent = new Intent(ActMovieDetail.this, ActYoutubePlayer.class);
+                                    intent.putExtra(AppFlags.tagFrom, "ActMovieDetail");
+                                    intent.putExtra(AppFlags.tagMovieVideoModel, movieVideoResponse.arrayListMovieVideomodel.get(i));
+                                    App.myStartActivity(ActMovieDetail.this, intent);
+
+                                }
+
+
+                            }else {
+                                App.showSnackBar(tvMovieTitle, strMsgSomethingWentWrong);
+                            }
+                        }
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                        App.showSnackBar(tvMovieTitle, strMsgSomethingWentWrong);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<MovieVideoResponse> call, Throwable t) {
+                    t.printStackTrace();
+                    if (customProgressDialog != null)
+                        customProgressDialog.dismiss();
+                    App.showSnackBar(tvMovieTitle, strMsgSomethingWentWrong);
+                    // App.setStopLoading(materialRefreshLayout);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (customProgressDialog != null)
+                customProgressDialog.dismiss();
+            App.showSnackBar(tvMovieTitle, strMsgSomethingWentWrong);
+            // App.setStopLoading(materialRefreshLayout);
+
+        }
+    }
 
 }
