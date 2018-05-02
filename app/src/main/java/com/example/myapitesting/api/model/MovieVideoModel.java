@@ -16,6 +16,9 @@ public class MovieVideoModel implements Serializable {
     @SerializedName("key")
     public String key;
 
+    @SerializedName("name")
+    public String name;
+
 
 
 

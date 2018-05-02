@@ -12,6 +12,8 @@ public class AppFlags
     public static boolean isEditProfileBase = false;
 
     public static String tagFrom = "tagFrom";
+    public static String tagMovieVideoResponse = "tagMovieVideoResponse";
+    public static String tagMovieVideoKey = "tagMovieVideoKey";
     public static String tagMobileNo = "tagMobileNo";
     public static String tagTitle = "tagTitle";
     public static String tagUrl = "tagUrl";

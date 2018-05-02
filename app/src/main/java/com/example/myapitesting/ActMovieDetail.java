@@ -52,8 +52,6 @@ public class ActMovieDetail extends AppCompatActivity {
     @BindView(R.id.tvOverView)
     TextView tvOverView;
 
-    @BindView(R.id.tvTest)
-    TextView tvTest;
 
     @BindView(R.id.tvbudget)
     TextView tvbudget;
@@ -153,6 +151,7 @@ public class ActMovieDetail extends AppCompatActivity {
                 tvTagline.setText(StringUtils.setString("TagLine  = "+movieDetailsResponse.tagline));
                 tvOverViewTAG.setText(StringUtils.setString("Overview"));
                 tvOtherDetailsTag.setText(StringUtils.setString("Other Details"));
+                tvWatchVideo.setText(StringUtils.setString("Watch Trailer"));
 
                 Picasso.with(this).load(StringUtils.setString(App.strImgBaseURL+movieModel.poster_path)).fit().centerCrop().into(img);
             }
@@ -268,14 +267,13 @@ public class ActMovieDetail extends AppCompatActivity {
                                // tvTest.setText(movieVideoResponse.arrayListMovieVideomodel.get(1).key);
 
 
-                                for(int i=0;i<4;i++){
 
-                                    Intent intent = new Intent(ActMovieDetail.this, ActYoutubePlayer.class);
+
+                                    Intent intent = new Intent(ActMovieDetail.this, ActVideoList.class);
                                     intent.putExtra(AppFlags.tagFrom, "ActMovieDetail");
-                                    intent.putExtra(AppFlags.tagMovieVideoModel, movieVideoResponse.arrayListMovieVideomodel.get(i));
-                                    App.myStartActivity(ActMovieDetail.this, intent);
+                                    intent.putExtra(AppFlags.tagMovieVideoResponse, movieVideoResponse);
 
-                                }
+                                    App.myStartActivity(ActMovieDetail.this, intent);
 
 
                             }else {

@@ -19,8 +19,7 @@ public class ActYoutubePlayer extends YouTubeBaseActivity {
 
 
     String TAG = "ActYoutubePlayer";
-    @BindView(R.id.btn)
-    Button btn;
+
 
     @BindView(R.id.youtubtePlayerView)
     YouTubePlayerView youtubtePlayerView;
@@ -54,12 +53,7 @@ public class ActYoutubePlayer extends YouTubeBaseActivity {
             }
         };
         youtubtePlayerView.initialize(PlayerConfig.API_KEY,onInitializedListener);
-        /*btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    youtubtePlayerView.initialize(PlayerConfig.API_KEY,onInitializedListener);
-            }
-        });*/
+
     }
     private void getIntentData() {
         try {
@@ -75,8 +69,8 @@ public class ActYoutubePlayer extends YouTubeBaseActivity {
 
 
                     //difference
-                    if (bundle.getSerializable(AppFlags.tagMovieVideoModel) != null) {
-                        movieVideoModel = (MovieVideoModel) bundle.getSerializable(AppFlags.tagMovieVideoModel);
+                    if (bundle.getSerializable(AppFlags.tagMovieVideoKey) != null) {
+                        movieVideoModel = (MovieVideoModel) bundle.getSerializable(AppFlags.tagMovieVideoKey);
                         key=movieVideoModel.key;
                     }
 
