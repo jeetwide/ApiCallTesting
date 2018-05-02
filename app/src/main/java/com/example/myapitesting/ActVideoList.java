@@ -137,7 +137,7 @@ public class ActVideoList extends AppCompatActivity {
             try {
                 final MovieVideoModel mCasesListModel = mArrayList.get(i);
                 versionViewHolder.tvName.setText(StringUtils.setString(mCasesListModel.name));
-                versionViewHolder.tvKey.setText(StringUtils.setString(mCasesListModel.key));
+               // versionViewHolder.tvKey.setText(StringUtils.setString(mCasesListModel.key));
 
                 versionViewHolder.rlMenuItem.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -162,7 +162,7 @@ public class ActVideoList extends AppCompatActivity {
 
 
         class VersionViewHolder extends RecyclerView.ViewHolder {
-            TextView tvName, tvKey, tvPhone, tvPinValue, tvPinTag;
+            TextView tvName,  tvPhone, tvPinValue, tvPinTag;
 
             ImageView ivProfilepic;
             RelativeLayout rlMenuItem;
@@ -172,7 +172,6 @@ public class ActVideoList extends AppCompatActivity {
                 super(itemView);
 
                 tvName = (TextView) itemView.findViewById(R.id.tvName);
-                tvKey = (TextView) itemView.findViewById(R.id.tvKey);
                 rlMenuItem = (RelativeLayout) itemView.findViewById(R.id.rlMenuItem);
 
 
