@@ -135,10 +135,20 @@ public class ActVideoList extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final VersionViewHolder versionViewHolder, final int i) {
             try {
-                MovieVideoModel mCasesListModel = mArrayList.get(i);
-
-
+                final MovieVideoModel mCasesListModel = mArrayList.get(i);
                 versionViewHolder.tvName.setText(StringUtils.setString(mCasesListModel.name));
+                versionViewHolder.tvKey.setText(StringUtils.setString(mCasesListModel.key));
+
+                versionViewHolder.rlMenuItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ActVideoList.this, ActYoutubePlayer.class);
+                        intent.putExtra(AppFlags.tagFrom, "ActVideoList");
+                        intent.putExtra(AppFlags.tagMovieVideoKey, mArrayList.get(i));
+
+                        App.myStartActivity(ActVideoList.this, intent);
+                    }
+                });
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -152,16 +162,18 @@ public class ActVideoList extends AppCompatActivity {
 
 
         class VersionViewHolder extends RecyclerView.ViewHolder {
-            TextView tvName, tvEmail, tvPhone, tvPinValue, tvPinTag;
+            TextView tvName, tvKey, tvPhone, tvPinValue, tvPinTag;
 
             ImageView ivProfilepic;
-            RelativeLayout rlRowMain;
+            RelativeLayout rlMenuItem;
 
 
             public VersionViewHolder(View itemView) {
                 super(itemView);
 
                 tvName = (TextView) itemView.findViewById(R.id.tvName);
+                tvKey = (TextView) itemView.findViewById(R.id.tvKey);
+                rlMenuItem = (RelativeLayout) itemView.findViewById(R.id.rlMenuItem);
 
 
 

@@ -71,7 +71,9 @@ public class ActYoutubePlayer extends YouTubeBaseActivity {
                     //difference
                     if (bundle.getSerializable(AppFlags.tagMovieVideoKey) != null) {
                         movieVideoModel = (MovieVideoModel) bundle.getSerializable(AppFlags.tagMovieVideoKey);
+
                         key=movieVideoModel.key;
+                        App.showLog(key);
                     }
 
                 }
